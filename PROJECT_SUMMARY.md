@@ -53,7 +53,9 @@ rwa-dex-project/
 │   ├── components/       # React components
 │   │   ├── Navbar.tsx    # Navigation bar
 │   │   ├── WalletConnect.tsx  # Wallet connection component
-│   │   └── SwapInterface.tsx  # Swap functionality component
+│   │   ├── SwapInterface.tsx  # Swap functionality component
+│   │   ├── LiquidityInterface.tsx  # Liquidity management component
+│   │   └── OraclePrice.tsx  # Oracle price feed component
 │   ├── store/           # State management
 │   │   └── walletStore.ts # Wallet state (Zustand)
 │   └── package.json
@@ -83,7 +85,8 @@ rwa-dex-project/
 │
 ├── docs/                 # Documentation
 │   ├── LOCAL_SETUP.md    # Local development guide
-│   └── INTEGRATION.md    # Smart contract integration guide
+│   ├── INTEGRATION.md    # Smart contract integration guide
+│   └── DEPLOYMENT_GUIDE.md  # Contract deployment and environment variable update guide
 │
 ├── package.json          # Root package.json with workspace scripts
 ├── README.md             # Main project README
@@ -143,11 +146,11 @@ rwa-dex-project/
 
 #### Pages
 - **Home**: Welcome page with wallet connection
-- **Swap**: Token swap interface (implemented)
-- **Upload**: Asset upload page (placeholder)
-- **Mint**: Token minting page (placeholder)
-- **Trade**: Trading interface (placeholder)
-- **Yield**: Yield farming interface (placeholder)
+- **Swap**: Token swap interface with slippage protection
+- **Upload**: Asset upload page with file upload and metadata management
+- **Mint**: Token minting page for minting TestToken ERC20 tokens
+- **Trade**: Liquidity management page with add/remove liquidity and price oracle
+- **Yield**: Yield farming page with staking, withdrawal, reward claiming, and exit functionality
 
 ### 6. Backend API
 
@@ -155,7 +158,9 @@ rwa-dex-project/
 - `GET /health` - Health check endpoint
 - `GET /block` - Get current block number
 - `GET /balance/:address` - Get account balance
-- `GET /events/:contract` - Get contract events (placeholder for future indexing)
+- `GET /events/:contract` - Get indexed events for a specific contract (with optional eventName and limit filters)
+- `GET /events` - Get all indexed events across all contracts
+- `GET /indexer/status` - Get event indexing status and statistics
 
 ## Smart Contracts Architecture
 
@@ -289,19 +294,17 @@ ETHERSCAN_API_KEY=your_etherscan_api_key
 - Smart contract architecture (Factory, Pair, Router, Oracle, LendingPool, YieldFarm)
 - Frontend wallet connection (MetaMask, Coinbase Wallet)
 - Swap interface and functionality
+- Upload page with file upload interface
+- Mint page with token minting functionality
+- Trade page with liquidity management (add/remove liquidity)
+- Yield farming page with full staking interface (stake, withdraw, claim rewards, exit)
 - Backend API server with basic endpoints
+- Backend event indexing system (indexes Transfer, Mint, Borrow, Staked, RewardPaid events)
+- Oracle price feed integration in frontend
+- Liquidity management UI component
 - Contract deployment scripts
 - Local development setup
-- Documentation (README, LOCAL_SETUP, INTEGRATION)
-
-### 🚧 In Progress / Placeholder
-- Upload page functionality
-- Mint page functionality
-- Trade page functionality
-- Yield farming page UI implementation
-- Backend event indexing
-- Oracle price feed integration in frontend
-- Liquidity management UI
+- Documentation (README, LOCAL_SETUP, INTEGRATION, DEPLOYMENT_GUIDE)
 
 ## Future Enhancements
 
@@ -313,17 +316,15 @@ ETHERSCAN_API_KEY=your_etherscan_api_key
 - Multi-chain support
 
 ### Frontend
-- Complete all page implementations
 - Transaction history
 - Analytics and charts
 - Portfolio tracking
 - Advanced swap routing
-- Liquidity pool management UI
-- Lending/borrowing interface
-- Yield farming dashboard
+- Lending/borrowing interface (UI for LendingPool interactions)
+- Enhanced error handling and user feedback
 
 ### Backend
-- Event indexing and storage
+- Database integration for persistent event storage (currently in-memory)
 - Historical data API
 - Price analytics
 - Transaction monitoring
@@ -365,9 +366,18 @@ MIT License
 
 ---
 
+## Contract Deployment
+
+After redeploying contracts, you must update environment variables. See the [Deployment Guide](./docs/DEPLOYMENT_GUIDE.md) for detailed instructions on which files to update.
+
+**Quick Summary**: Update contract addresses in:
+- `frontend/.env.local` - All `NEXT_PUBLIC_*_ADDRESS` variables
+- `backend/.env` - All contract address variables
+
 ## Quick Links
 
 - [Main README](./README.md)
 - [Local Setup Guide](./docs/LOCAL_SETUP.md)
 - [Integration Guide](./docs/INTEGRATION.md)
+- [Deployment Guide](./docs/DEPLOYMENT_GUIDE.md)
 
