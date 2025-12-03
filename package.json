@@ -1,0 +1,26 @@
+{
+  "name": "rwa-dex-project",
+  "version": "1.0.0",
+  "description": "Full-stack DeFi/DEX application with Next.js, Express.js, and Hardhat",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "test:contracts": "cd contracts && npx hardhat test",
+    "deploy:local": "cd contracts && npx hardhat run scripts/deploy.ts --network localhost",
+    "deploy:sepolia": "cd contracts && npx hardhat run scripts/deploy.ts --network sepolia",
+    "node": "cd contracts && npx hardhat node"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "contracts"
+  ]
+}
+
